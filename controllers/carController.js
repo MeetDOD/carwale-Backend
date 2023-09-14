@@ -90,8 +90,8 @@ const createCar = async (req, res) => {
         }
         const productPictures = req.files.map((file) => {
             console.log(file.path)
-            console.log(file.path.replace('uploads\\', ''))
-            file.path.replace('uploads\\', '')
+            console.log(file.path.replace('uploads/', ''))
+            file.path.replace('uploads/', '')
         });
 
         const slug = slugify(name);
