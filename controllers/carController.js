@@ -89,11 +89,10 @@ const createCar = async (req, res) => {
             case !fuelTank: res.status(500).send({success: false,message: "fuelTank is Required",});
         }
         const productPictures = req.files.map((file) => {
-            console.log(file.path)
-            console.log(file.path.replace('uploads/', ''))
+            
             file.path.replace('uploads/', '')
         });
-
+        console.log(productPictures)
         const slug = slugify(name);
 
         const car = new carModel({
