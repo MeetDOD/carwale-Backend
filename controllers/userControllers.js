@@ -1,5 +1,6 @@
 const { hashPassword, comparePassword } = require("../auth/auth")
 const userModel = require("../models/userModel")
+const orderModel = require("../models/orderModel")
 const JWT = require('jsonwebtoken')
 
 const registerUser = async (req,res) => {
@@ -111,6 +112,39 @@ const loginUser = async (req,res) => {
     }
 }
 
+const updateProfile = async (req,res) => {
+    try {
+        const { name, email, password, address, phone } = req.body;
+        const user = await userModel.findById(req.user._id);
+        if (password && password.length < 6) {
+          return res.json({ error: "Passsword is required and 6 character long" });
+        }
+        const hashedPassword = password ? await hashPassword(password) : undefined;
+        const updatedUser = await userModel.findByIdAndUpdate(
+          req.user._id,
+          {
+            name: name || user.name,
+            password: hashedPassword || user.password,
+            phone: phone || user.phone,
+            address: address || user.address,
+          },
+          { new: true }
+        );
+        res.status(200).send({
+          success: true,
+          message: "Profile Updated SUccessfully",
+          updatedUser,
+        });
+      } catch (error) {
+        console.log(error);
+        res.status(400).send({
+          success: false,
+          message: "Error WHile Update profile",
+          error,
+        });
+      }
+}
+
 const test = (req,res) => {
     res.status(200).send({
         success:true,
@@ -122,4 +156,56 @@ const adminAuth = (req,res) => {
 
 }
 
-module.exports = {registerUser,loginUser,test,adminAuth}
+const myOrders = async(req,res) => {
+    try {
+        const orders = await orderModel
+          .find({ buyer: req.user._id }).populate('products')
+          .populate("buyer", "name");
+        res.json(orders);
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          message: "Error WHile Geting Orders",
+          error,
+        });
+      }
+}
+
+const getAllOrdersController = async(req,res) => {
+try {
+    const orders = await orderModel
+      .find({}).populate("products")
+      .populate("buyer", "name")
+      .sort({ createdAt: "-1" });
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error WHile Geting Orders",
+      error,
+    });
+  }
+}
+
+const orderStatusController = async(req,res) => {
+    try {
+        const { orderId } = req.params;
+        const { status } = req.body;
+        const orders = await orderModel.findByIdAndUpdate(
+          orderId,
+          { status },
+          { new: true }
+        );
+        res.json(orders);
+      } catch (error) {
+        console.log(error);
+        res.status(500).send({
+          success: false,
+          message: "Error While Updateing Order",
+          error,
+        });
+      }
+}
+
+module.exports = {registerUser,loginUser,test,adminAuth,myOrders,getAllOrdersController,orderStatusController,updateProfile}
