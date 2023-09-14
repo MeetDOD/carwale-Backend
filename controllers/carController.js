@@ -88,7 +88,11 @@ const createCar = async (req, res) => {
             case !size: res.status(500).send({success: false,message: "size is Required",});
             case !fuelTank: res.status(500).send({success: false,message: "fuelTank is Required",});
         }
-        const productPictures = req.files.map(file => file.path.replace('uploads\\', ''));
+        const productPictures = req.files.map((file) => {
+            console.log(file.path)
+            console.log(file.path.replace('uploads\\', ''))
+            file.path.replace('uploads\\', '')
+        });
 
         const slug = slugify(name);
 
