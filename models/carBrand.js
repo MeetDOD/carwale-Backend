@@ -9,6 +9,9 @@ const brandSchema = new mongoose.Schema({
     slug:{
         type:String,
         lowercase:true
+    },
+    brandPictures:{
+        type:String
     }
 })
 

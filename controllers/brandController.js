@@ -41,10 +41,16 @@ const getBrandById = async (req,res) => {
 const createBrand = async (req,res) => {
     try{
         const {name} = req.body
+        const brandPictures = req.file.path.replace('uploads/', '')
 
         if(!name){
             return res.status(401).send({
                 message:"Name is Required"
+            })
+        }
+        if(!brandPictures){
+            return res.status(401).send({
+                message:"Brand Image is Required"
             })
         }
 
@@ -57,11 +63,13 @@ const createBrand = async (req,res) => {
             })
         }
 
-        const brand = await new brandModel({name,slug:slugify(name)}).save()
+        const brand = new brandModel({name,brandPictures,slug:slugify(name)})
+        await brand.save()
+        console.log(brand)
         res.status(201).send({
             success:true,
             message:'Brand Created Successfully',
-            brand
+            brand,
         })
     }catch(err){
         res.status(500).send({
