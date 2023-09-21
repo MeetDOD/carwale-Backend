@@ -1,5 +1,6 @@
 const { default: slugify } = require('slugify')
 const brandModel = require('../models/carBrand')
+const fs = require('fs')
 
 const getBrand = async (req,res) => {
     try{
@@ -44,14 +45,10 @@ const createBrand = async (req,res) => {
         const brandPictures = req.file.path.replace('uploads/', '')
 
         if(!name){
-            return res.status(401).send({
-                message:"Name is Required"
-            })
+            return res.send({message:'Brand Name is Required'})
         }
         if(!brandPictures){
-            return res.status(401).send({
-                message:"Brand Image is Required"
-            })
+            return res.send({message:'Brand Image is Required'})
         }
 
         const existCategory = await brandModel.findOne({name})
@@ -103,6 +100,17 @@ const updateBrand = async (req,res) => {
 const deleteBrand = async (req,res) => {
     try{
         const {id} = req.params
+        try{
+            for(const x of carModel_.brandPictures){
+                fs.unlink(path.join(__dirname, '../uploads/',x), (err)=> {
+                    if(err){
+                        throw err;
+                    }
+                })                
+            }
+        }catch(e){
+            console.log("Delte: " +e)
+        }
         await brandModel.findByIdAndDelete(id)
         res.status(200).send({
             success:true,
