@@ -84,7 +84,7 @@ const loginUser = async (req,res) => {
         if(!match){
             return res.status(200).send({
                 success:false,
-                message:'Invalid Email or Password!'
+                message:'Invalid Password !'
             })
         }
 
@@ -205,4 +205,4 @@ const orderStatusController = async(req,res) => {
       }
 }
 
-module.exports = {registerUser,loginUser,test,myOrders,getAllOrdersController,orderStatusController,updateProfile}
+module.exports = {registerUser,loginUser,test,adminAuth,myOrders,getAllOrdersController,orderStatusController,updateProfile}
