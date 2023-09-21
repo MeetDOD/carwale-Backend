@@ -38,7 +38,7 @@ const registerUser = async (req,res) => {
 
         res.status(201).send({
             success:true,
-            message:'User Registration SUccessfull',
+            message:'Registration Successfull',
             user
         })
     }catch(err){
@@ -75,7 +75,7 @@ const loginUser = async (req,res) => {
         if(!user){
             return res.status(200).send({
                 success:false,
-                message:'Invalid Email !'
+                message:'Invalid Email or Password!'
             })
         }
 
@@ -84,7 +84,7 @@ const loginUser = async (req,res) => {
         if(!match){
             return res.status(200).send({
                 success:false,
-                message:'Invalid Password !'
+                message:'Invalid Email or Password !'
             })
         }
 
@@ -92,7 +92,7 @@ const loginUser = async (req,res) => {
 
         res.status(200).send({
             success:true,
-            message:'Login Successfully',
+            message:'Login Successfull',
             user:{
                 _id:user._id,
                 name:user.name,
