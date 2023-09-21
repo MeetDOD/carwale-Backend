@@ -205,4 +205,4 @@ const orderStatusController = async(req,res) => {
       }
 }
 
-module.exports = {registerUser,loginUser,test,adminAuth,myOrders,getAllOrdersController,orderStatusController,updateProfile}
+module.exports = {registerUser,loginUser,test,myOrders,getAllOrdersController,orderStatusController,updateProfile}
