@@ -51,6 +51,10 @@ const createBrand = async (req,res) => {
             return res.send({message:'Brand Image is Required'})
         }
 
+        if(!name || !brandPictures){
+            return res.send({message:'Please fill all the fields'})
+        }
+
         const existCategory = await brandModel.findOne({name})
 
         if(existCategory){

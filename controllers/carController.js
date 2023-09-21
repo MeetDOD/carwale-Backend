@@ -162,21 +162,26 @@ const deleteCar = async (req,res) => {
 
 const updatecar = async (req,res) => {
     try{
-        const {name,description,brand} = req.fields
-        // const {photo} = req.files
+        const {name,description,fuelType,transmission,engineSize,mileage,safetyrating,warranty,seater,size,fuelTank,price} = req.fields
 
         switch(true){
-            case !name : return res.status(500).send({message:"Name is required"})
-            case !description : return res.status(500).send({message:"Description is required"})
-            case !brand : return res.status(500).send({message:"Brand is required"})
-            // case !photo : return res.status(500).send({message:"Photo is required and should be less than 1Mb"})
+            case !name : return res.send({message:"Name is required"})
+            case !description : return res.send({message:"Description is required"})
+            case !price : return res.send({message:"Price is required"})
+            case !fuelType : return res.send({message:"FuelType is required"})
+            case !transmission : return res.send({message:"Transmission is required"})
+            case !engineSize : return res.send({message:"EngineSize is required"})
+            case !mileage : return res.send({message:"Mileage is required"})
+            case !safetyrating : return res.send({message:"Safetyrating is required"})
+            case !warranty : return res.send({message:"Warranty is required"})
+            case !seater : return res.send({message:"Seater is required"})
+            case !size : return res.send({message:"Size is required"})
+            case !fuelTank : return res.send({message:"Fuel Tank is required"})
+            // case !brand : return res.status(500).send({message:"Brand is required"})
         }
 
         const car = await carModel.findByIdAndUpdate(req.params.pid,{...req.fields,slug:slugify(name)},{new:true})
-        // if(photo){
-        //     car.photo.data = fs.readFileSync(photo.path)
-        //     car.photo.contentType = photo.type
-        // }
+
         await car.save()
         res.status(201).send({
             success:true,

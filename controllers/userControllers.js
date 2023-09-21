@@ -116,14 +116,15 @@ const updateProfile = async (req,res) => {
     try {
         const { name, email, password, address, phone } = req.body;
         const user = await userModel.findById(req.user._id);
-        if (password && password.length < 6) {
-          return res.json({ error: "Passsword is required and 6 character long" });
+        if (!password) {
+          return res.send({ message: "Passsword is required" });
         }
         const hashedPassword = password ? await hashPassword(password) : undefined;
         const updatedUser = await userModel.findByIdAndUpdate(
           req.user._id,
           {
             name: name || user.name,
+            email:email || user.email,
             password: hashedPassword || user.password,
             phone: phone || user.phone,
             address: address || user.address,
@@ -139,7 +140,7 @@ const updateProfile = async (req,res) => {
         console.log(error);
         res.status(400).send({
           success: false,
-          message: "Error WHile Update profile",
+          message: "Error while Updating profile",
           error,
         });
       }
@@ -151,10 +152,6 @@ const test = (req,res) => {
         message:'Protected Routes'
     })
 } 
-
-const adminAuth = (req,res) => {
-
-}
 
 const myOrders = async(req,res) => {
     try {
@@ -208,4 +205,4 @@ const orderStatusController = async(req,res) => {
       }
 }
 
-module.exports = {registerUser,loginUser,test,adminAuth,myOrders,getAllOrdersController,orderStatusController,updateProfile}
+module.exports = {registerUser,loginUser,test,myOrders,getAllOrdersController,orderStatusController,updateProfile}
