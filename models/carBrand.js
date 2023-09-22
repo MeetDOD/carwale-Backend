@@ -12,7 +12,11 @@ const brandSchema = new mongoose.Schema({
     },
     brandPictures:{
         type:String
-    }
+    },
+    carInvoleInThisBrand : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'car'
+    }]
 })
 
 const brandModel = mongoose.model('brand',brandSchema);

@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const getBrand = async (req,res) => {
     try{
-        const brand = await brandModel.find({})
+        const brand = await brandModel.find({}).populate('carInvoleInThisBrand')
 
         res.status(200).send({
             success:true,
@@ -23,7 +23,7 @@ const getBrand = async (req,res) => {
 
 const getBrandById = async (req,res) => {
     try{
-        const brand = await brandModel.findOne({slug:req.params.slug})
+        const brand = await brandModel.findOne({slug:req.params.slug}).populate('carInvoleInThisBrand')
 
         res.status(200).send({
             success:true,

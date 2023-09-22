@@ -4,7 +4,8 @@ const orderModel = require("../models/orderModel")
 const fs = require('fs')
 const braintree = require("braintree");
 const dotenv = require('dotenv')
-const path = require('path')
+const path = require('path');
+const brandModel = require("../models/carBrand");
 
 dotenv.config()
 
@@ -110,6 +111,10 @@ const createCar = async (req, res) => {
         });
 
         await car.save();
+
+        const category = await brandModel.findById({_id : brand});
+        await category.carInvoleInThisBrand.push(car);
+        category.save();
 
         res.status(201).send({
             success: true,
