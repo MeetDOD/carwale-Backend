@@ -19,7 +19,7 @@ var gateway = new braintree.BraintreeGateway({
 
 const getAllCar = async (req,res) => {
     try{
-        const car = await carModel.find({}).populate('brand').select('-photo')
+        const car = await carModel.find({}).populate('brand')
 
         res.status(200).send({
             success:true,
@@ -38,7 +38,7 @@ const getAllCar = async (req,res) => {
 
 const getCarById = async (req,res) => {
     try{
-        const car = await carModel.findOne({slug:req.params.slug}).populate('brand','carInvoleInThisBrand')
+        const car = await carModel.findOne({slug:req.params.slug}).populate('brand')
         
         res.status(200).send({
             success:true,
