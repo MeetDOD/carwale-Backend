@@ -38,7 +38,7 @@ const getAllCar = async (req,res) => {
 
 const getCarById = async (req,res) => {
     try{
-        const car = await carModel.findOne({slug:req.params.slug}).populate('brand')
+        const car = await carModel.findOne({slug:req.params.slug}).populate('brand','carInvoleInThisBrand')
         
         res.status(200).send({
             success:true,
@@ -203,6 +203,28 @@ const updatecar = async (req,res) => {
     }
 }
 
+const relatedCar = async (req,res) => {
+    try{
+        const {cid,bid} = req.params
+        const cars = await carModel.find({
+            brand:bid,
+            _id:{$ne:cid}
+        }).populate('brand')
+
+        res.status(200).send({
+            success:true,
+            message:'Related Cars for this Brands',
+            cars
+        })
+    }catch(err){
+        res.status(400).send({
+            success:false,
+            message:"Error While Fetching Related Car",
+            err
+        })
+    }
+}
+
 const braintreeTokenController = async(req,res) => {
     try {
         gateway.clientToken.generate({}, function (err, response) {
@@ -250,4 +272,4 @@ const brainTreePaymentController = async (req,res) => {
       }
 }
 
-module.exports = {createCar,getAllCar,getCarById,getPhotoById,deleteCar,updatecar,braintreeTokenController,brainTreePaymentController}
+module.exports = {createCar,getAllCar,getCarById,getPhotoById,deleteCar,updatecar,relatedCar,braintreeTokenController,brainTreePaymentController}
