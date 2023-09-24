@@ -9,7 +9,9 @@ const app = express();
 
 app.use(express.json())
 dotenv.config()
-app.use(cors())
+app.use(cors({
+    origin:['https://carwale.shop','https://carwale.vercel.app']
+}))
 
 connection();
 
