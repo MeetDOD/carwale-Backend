@@ -4,12 +4,10 @@ const dotenv = require('dotenv')
 const userRoutes = require('./routes/userRoutes')
 const brandRoutes = require('./routes/brandRoutes')
 const carRoutes = require('./routes/carRoutes')
-const cors = require('cors')
 const app = express();
 
 app.use(express.json())
 dotenv.config()
-app.use(cors());
 
 connection();
 
